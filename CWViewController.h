@@ -7,9 +7,6 @@
 #include <SpringBoard/SBApplicationController.h>
 #include <SpringBoard/SBApplication.h>
 
-@interface CWViewController : PWContentViewController <UITextViewDelegate, UITableViewDelegate, UITableViewDataSource>{
-	CWTheme *_clearTheme;
-	UITextView *_textView;
-}
+@interface CWViewController : PWContentItemViewController
 
 @end

@@ -6,28 +6,12 @@
 
 @implementation CWTheme
 
-- (UIColor *)preferredBarTextColor{
-    return [UIColor whiteColor];
-}
-
-- (BOOL)wantsDarkKeyboard {
-    return YES;
-}
-
-- (UIColor *)tintColor {
-    return [UIColor colorWithRed:232/255.0 green:73/255.0 blue:34/255.0 alpha:1.0];
-}
-
-- (UIColor *)sheetForegroundColor {
-    return [UIColor colorWithRed:235/255.0 green:117/255.0 blue:34/255.0 alpha:1.0];
-}
-
-- (UIColor *)sheetBackgroundColor {
-    return [self tintColor];
+- (CGFloat)cornerRadius {
+    return 7.0;
 }
 
 - (UIColor *)navigationBarBackgroundColor {
-    return [self tintColor];
+    return [UIColor colorWithRed:232/255.0 green:73/255.0 blue:34/255.0 alpha:1.0];
 }
 
 - (UIColor *)navigationTitleTextColor {
@@ -35,29 +19,17 @@
 }
 
 - (UIColor *)navigationButtonTextColor {
-    return [UIColor whiteColor];
+    return [UIColor colorWithWhite:0.9 alpha:1.0];
 }
 
 /*
-- (UIColor *)cellSeparatorColor;
-- (UIColor *)cellBackgroundColor;
-- (UIColor *)cellTitleTextColor;
-- (UIColor *)cellValueTextColor;
-- (UIColor *)cellButtonTextColor;
-- (UIColor *)cellInputTextColor;
-- (UIColor *)cellInputPlaceholderTextColor;
-- (UIColor *)cellPlainTextColor;
+- (UIColor *)sheetForegroundColor {
+    return [UIColor colorWithRed:235/255.0 green:117/255.0 blue:34/255.0 alpha:1.0];
+}
 
-- (UIColor *)cellSelectedBackgroundColor;
-- (UIColor *)cellSelectedTitleTextColor;
-- (UIColor *)cellSelectedValueTextColor;
-- (UIColor *)cellSelectedButtonTextColor;
-
-- (UIColor *)cellHeaderFooterViewBackgroundColor;
-- (UIColor *)cellHeaderFooterViewTitleTextColor;
-
-- (UIColor *)switchThumbColor;
-- (UIColor *)switchOnColor;
-- (UIColor *)switchOffColor;*/
+- (UIColor *)sheetBackgroundColor {
+    return [self tintColor];
+}
+*/
 
 @end

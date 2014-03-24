@@ -9,7 +9,6 @@
 @synthesize addTaskImage;
 
 - (void)configure {
-	self.layout = PWWidgetLayoutCustom;
 	[self loadThemeNamed:@"CWTheme"];
 }
 
