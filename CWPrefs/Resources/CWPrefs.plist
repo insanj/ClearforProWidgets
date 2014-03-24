@@ -30,6 +30,13 @@
             <key>icon</key> 		 <string>safari.png</string>
             <key>action</key> 	   <string>website</string>
         </dict>
+
+		<dict>
+			<key>cell</key> 		 <string>PSButtonCell</string>
+			<key>label</key> 	    <string>Donate (PayPal)</string>
+			<key>icon</key> 		 <string>paypal.png</string>
+			<key>action</key> 	   <string>donate</string>
+		</dict>
 	</array>
 </dict>
 </plist>

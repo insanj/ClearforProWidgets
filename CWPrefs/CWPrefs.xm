@@ -18,7 +18,6 @@
 	return _specifiers;
 }
 
-
 - (void)insanj {
 	[self twitter:@"insanj"];
 }
@@ -42,6 +41,10 @@
 
 - (void)website {
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://github.com/insanj/dated"]];
+}
+
+- (void)donate {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://insanj.com/"]];
 }
 
 @end

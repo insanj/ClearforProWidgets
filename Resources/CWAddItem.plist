@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>actionButtonText</key>					  <string>Add</string>
+	<key>shouldAutoConfigureStandardButtons</key>	<true/>
+	<key>items</key> <array>
+		<dict>
+			<key>key</key> 	 		  <string>title</string>
+			<key>type</key> 			  <string>textArea</string>
+			<key>overrideHeight</key> 	<real>120.0</real>
+		</dict>
+
+		<dict>
+			<key>key</key> 	<string>list</string>
+			<key>title</key>   <string>List</string>
+			<key>type</key>	<string>CWItemListValue</string>
+			<key>default</key> <integer>0</integer>
+		</dict>
+	</array>
+</dict>
+</plist>
