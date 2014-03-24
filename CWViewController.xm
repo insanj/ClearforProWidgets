@@ -25,13 +25,16 @@
 
 - (void)loadLists {
 	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
-	[item setListItemTitles:@[@"Feature pending..."] values:@[@(NSIntegerMax)]];
+
+	// Here there would be retrieval and processing of Clear lists, but for
+	// testing purposes, only the "Create List..." option is shown.
+	[item setListItemTitles:@[@"Create List..."] values:@[@(NSIntegerMax)]];
 	[item setValue:@(0)];
 }
 
 - (void)itemValueChangedEventHandler:(PWWidgetItem *)item oldValue:(id)oldValue {
 	if ([item.key isEqualToString:@"list"]) {
-		NSArray *value = (NSArray *)item.value;
+		NSArray *value = (NSArray *) item.value;
 		if ([value count] == 1) {
 			if ([value[0] isEqual:[[(PWWidgetItemListValue *)item listItemValues] lastObject]]) {
 				__block NSArray *oldListValue = [oldValue retain];

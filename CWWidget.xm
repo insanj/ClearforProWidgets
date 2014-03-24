@@ -9,6 +9,7 @@
 @synthesize addTaskImage;
 
 - (void)configure {
+	[super configure];
 	[self loadThemeNamed:@"CWTheme"];
 }
 
