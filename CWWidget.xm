@@ -11,11 +11,10 @@
 	[self setupAppIfNeeded];
 	self.title = @"Clear";
 
-	[OBJCIPC sendMessageToAppWithIdentifier:_clearApp.displayIdentifier messageName:@"CWCurrentTheme" dictionary:nil replyHandler:^(NSDictionary *reply) {
-		NSLog(@"[CWWidget] Received proper reply from CWIPC for theme request [%@]...", reply);
-		self.preferredTintColor = reply[@"tintColor"];
-		self.preferredBarTextColor = reply[@"textColor"];
-	}];
+	NSDictionary *ipcResponse = [OBJCIPC sendMessageToAppWithIdentifier:_clearApp.displayIdentifier messageName:@"CWCurrentTheme" dictionary:nil];
+	NSLog(@"[CWWidget] Received proper reply from CWIPC for theme request [%@]...", ipcResponse);
+	self.preferredTintColor = ipcResponse[@"tintColor"];
+	self.preferredBarTextColor = ipcResponse[@"textColor"];
 }
 
 - (void)load {

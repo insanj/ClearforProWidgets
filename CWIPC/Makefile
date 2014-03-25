@@ -4,7 +4,7 @@ ARCHS = armv7 arm64
 include theos/makefiles/common.mk
 
 TWEAK_NAME = CWIPC
-CWIPC_FILES = CWIPC.m
+CWIPC_FILES = CWIPC.xm
 CWIPC_FRAMEWORKS = CoreFoundation Foundation UIKit
 CWIPC_LIBRARIES = objcipc
 
