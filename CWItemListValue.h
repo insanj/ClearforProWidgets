@@ -4,6 +4,6 @@
 
 #import <libprowidgets/WidgetItems/PWWidgetItemListValue.h>
 
-@interface CWItemListValue : PWWidgetItemListValue
+@interface CWItemListValue : PWWidgetItemListValue // : PWWidgetItemCell
 
 @end

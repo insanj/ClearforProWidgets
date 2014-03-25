@@ -7,7 +7,7 @@
 	<key>PWInfoType</key>	   		 <string>widget</string>
 	<key>PWInfoDisplayName</key> 		<string>Clear</string>
 	<key>PWInfoAuthor</key> 			 <string>Julian (insanj) Weiss</string>
-	<key>PWInfoDescription</key> 		<string>Add a task to your Clear list.
+	<key>PWInfoDescription</key> 		<string>Add a task to your Clear list
 
 Requires Clear or Clear+ from the App Store.</string>
 	<key>PWInfoIconFile</key>    		<string>icon.png</string>

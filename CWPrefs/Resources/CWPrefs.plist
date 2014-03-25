@@ -5,16 +5,11 @@
 	<key>title</key>	<string>Clear</string>
 	<key>items</key>	<array>
 
-		<dict>
-			<key>cell</key>		  <string>PSGroupCell</string>
-			<key>footerText</key>	<string>More coming soon...</string>
-		</dict>
-
 	    <dict>
 			<key>cell</key>	          <string>PSGroupCell</string>
 			<key>label</key>             <string>About</string>
             <key>footerAlignment</key>   <integer>1</integer>
-            <key>footerText</key>		<string>Thanks for using Clear for ProWidgets (1.0) by Julian Weiss. Please send all feedback directly from Cydia.&#xA;&#xA;© 2014 Julian Weiss</string>
+            <key>footerText</key>		<string>Thanks for using Clear for ProWidgets (1.0) by Julian Weiss. Please send all feedback directly from Cydia.</string>
 		</dict>
 
         <dict>
@@ -37,6 +32,13 @@
 			<key>icon</key> 		 <string>paypal.png</string>
 			<key>action</key> 	   <string>donate</string>
 		</dict>
+
+		<dict>
+			<key>cell</key>		 	 <string>PSGroupCell</string>
+			<key>footerAlignment</key>   <integer>1</integer>
+			<key>footerText</key>		<string>© 2014 Julian Weiss</string>
+		</dict>
+
 	</array>
 </dict>
 </plist>

@@ -3,19 +3,19 @@
 <plist version="1.0">
 <dict>
 	<key>shouldAutoConfigureStandardButtons</key> <true/>
+	<key>requiresKeyboard</key> 				  <true/>
 	<key>actionButtonText</key>	 	 		 <string>Add</string>
 	<key>items</key> <array>
 		<dict>
-			<key>key</key> 	 		  <string>task</string>
-			<key>type</key> 			  <string>textArea</string>
-			<key>overrideHeight</key> 	<real>120.0</real>
+			<key>key</key>				 <string>task</string>
+			<key>type</key>				<string>textArea</string>
+			<key>overrideHeight</key>	  <real>120.0</real>
 		</dict>
 
 		<dict>
-			<key>key</key> 		<string>list</string>
-			<key>title</key>   	<string>List</string>
-			<key>type</key>		<string>CWItemListValue</string>
-			<key>default</key> 	<integer>0</integer>
+			<key>key</key> 			<string>list</string>
+			<key>title</key>   		<string>List</string>
+			<key>type</key>	   	 <string>CWItemListValue</string>
 		</dict>
 	</array>
 </dict>

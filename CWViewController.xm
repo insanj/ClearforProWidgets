@@ -24,7 +24,6 @@
 	// Here there would be retrieval and processing of Clear lists, but for
 	// testing purposes, only the "Create List..." option is shown.
 	[item setListItemTitles:@[@"Create List..."] values:@[@(NSIntegerMax)]];
-	[item setValue:@(0)];
 }
 
 - (void)itemValueChangedEventHandler:(PWWidgetItem *)item oldValue:(id)oldValue {
