@@ -3,7 +3,6 @@
 // Source and license fully available on GitHub.
 
 #import "CWViewController.h"
-#import "CWTheme.h"
 #import "CWWidget.h"
 #import "CWItemListValue.h"
 
@@ -17,10 +16,6 @@
 
 	[self setItemValueChangedEventHandler:self selector:@selector(itemValueChangedEventHandler:oldValue:)];
 	[self setSubmitEventHandler:self selector:@selector(submitEventHandler:)];
-}
-
-- (NSString *)title {
-	return @"Clear";
 }
 
 - (void)loadLists {

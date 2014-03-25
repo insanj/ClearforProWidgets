@@ -6,12 +6,6 @@
 #import "CWWidget.h"
 
 @implementation CWWidget
-@synthesize addTaskImage;
-
-- (void)configure {
-	[super configure];
-	[self loadThemeNamed:@"CWTheme"];
-}
 
 - (void)load {
 	SBApplicationController *controller = [%c(SBApplicationController) sharedInstance];
@@ -34,7 +28,7 @@
 		clearApp = clear;
 	}
 
-	addTaskImage = [[UIImage imageNamed:@"AddListPlus" inBundle:[NSBundle bundleWithPath:clearApp.path]] retain];
+	_addTaskImage = [[UIImage imageNamed:@"AddListPlus" inBundle:[NSBundle bundleWithPath:clearApp.path]] retain];
 
 	_viewController = [[CWViewController alloc] initForWidget:self];
 	[self pushViewController:_viewController animated:NO];
@@ -42,7 +36,7 @@
 
 - (void)dealloc {
 	[_viewController release];
-	[addTaskImage release];
+	[_addTaskImage release];
 	[super dealloc];
 }
 
