@@ -7,6 +7,8 @@
 #include <SpringBoard/SBApplicationController.h>
 #include <SpringBoard/SBApplication.h>
 
-@interface CWViewController : PWContentItemViewController
+@interface CWViewController : PWContentItemViewController {
+	NSArray *_lists;
+}
 
 @end

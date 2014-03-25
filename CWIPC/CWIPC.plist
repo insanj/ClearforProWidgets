@@ -1,0 +1,6 @@
+{
+	Filter = {
+		Bundles = ( "com.realmacsoftware.clear", "com.realmacsoftware.clear.universal");
+		Mode = "Any";
+	};
+}

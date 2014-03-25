@@ -28,38 +28,53 @@
 	NSLog(@"item:%@, oldValue:%@", item, oldValue);
 	if ([item.key isEqualToString:@"list"]) {
 		NSArray *value = (NSArray *) item.value;
-		if ([item.tit zles[[item.value objectForIndex:oldValue]] isEqualToString:@"Create List..."]) {
-			if ([value[0] isEqual:[[(PWWidgetItemListValue *)item listItemValues] lastObject]]) {
-				__block NSArray *oldListValue = [oldValue retain];
-				[self.widget prompt:@"Enter the list name" title:@"Create List" buttonTitle:@"Create" defaultValue:nil style:UIAlertViewStylePlainTextInput completion:^(BOOL cancelled, NSString *firstValue, NSString *secondValue) {
-					if (cancelled) {
-						[item setValue:oldListValue];
-					}
 
-					else {
-						[self createList:firstValue];
-					}
+		// If the value (integer association) is equal to the last value in the list, prompt
+		// to Create. Since the last value inserted is NSIntegerMax, if the item that's tapped
+		// is also NSIntegerMax, then it's clear we should Create.
+		if ([value[0] isEqual:[[(PWWidgetItemListValue *)item listItemValues] lastObject]]) {
+			__block NSArray *oldListValue = [oldValue retain];
+			[self.widget prompt:@"What would you like to name your new Clear list?" title:@"Create List" buttonTitle:@"Add" defaultValue:nil style:UIAlertViewStylePlainTextInput completion:^(BOOL cancelled, NSString *firstValue, NSString *secondValue) {
+				if (cancelled) {
+					[item setValue:oldListValue];
+				}
 
-					[oldListValue release], oldListValue = nil;
-				}];
-			}
+				else {
+					[self createList:firstValue];
+				}
+
+				[oldListValue release], oldListValue = nil;
+			}];
 		}
 	}
 }
 
 - (void)createList:(NSString *)name {
-	NSString *scheme = [@"clearapp://task/create?listName=" stringByAppendingString:name];
+	NSString *scheme = [@"clearapp://list/create?listName=" stringByAppendingString:name];
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+
+	[self loadLists];
 }
 
 - (void)submitEventHandler:(NSDictionary *)values {
 	[self.widget dismiss];
 
-	NSString *scheme = [@"clearapp://task/create?taskName=" stringByAppendingString:values[@"task"]];
+	NSString *task = values[@"task"];
+	NSString *scheme;
+	if (_lists && _lists.count > 1) {
+		scheme = [@"clearapp://task/create?listPosition=0&taskName=" stringByAppendingString:task];
+	}
+
+	else {
+		NSUInteger selectedListIndex = [(values[@"list"])[0] unsignedIntegerValue];
+		scheme = [NSString stringWithFormat:@"clearapp://task/create?taskName=%@&listName=%@", task, _lists[selectedListIndex]];
+	}
+
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
 - (void)dealloc {
+	[_lists release];
 	[super dealloc];
 }
 
