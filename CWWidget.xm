@@ -30,6 +30,8 @@
 
 	_addTaskImage = [[UIImage imageNamed:@"AddListPlus" inBundle:[NSBundle bundleWithPath:clearApp.path]] retain];
 
+	// self.preferredTintColor = themed tint from app
+
 	_viewController = [[CWViewController alloc] initForWidget:self];
 	[self pushViewController:_viewController animated:NO];
 }

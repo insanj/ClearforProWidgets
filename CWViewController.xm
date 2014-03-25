@@ -19,17 +19,16 @@
 }
 
 - (void)loadLists {
+	// Load list values from IPC...
 	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
-
-	// Here there would be retrieval and processing of Clear lists, but for
-	// testing purposes, only the "Create List..." option is shown.
 	[item setListItemTitles:@[@"Create List..."] values:@[@(NSIntegerMax)]];
 }
 
 - (void)itemValueChangedEventHandler:(PWWidgetItem *)item oldValue:(id)oldValue {
+	NSLog(@"item:%@, oldValue:%@", item, oldValue);
 	if ([item.key isEqualToString:@"list"]) {
 		NSArray *value = (NSArray *) item.value;
-		if ([value count] == 1) {
+		if ([item.tit zles[[item.value objectForIndex:oldValue]] isEqualToString:@"Create List..."]) {
 			if ([value[0] isEqual:[[(PWWidgetItemListValue *)item listItemValues] lastObject]]) {
 				__block NSArray *oldListValue = [oldValue retain];
 				[self.widget prompt:@"Enter the list name" title:@"Create List" buttonTitle:@"Create" defaultValue:nil style:UIAlertViewStylePlainTextInput completion:^(BOOL cancelled, NSString *firstValue, NSString *secondValue) {

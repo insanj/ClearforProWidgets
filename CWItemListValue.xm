@@ -14,7 +14,6 @@
 // - (void)willAppear;
 
 - (NSString *)displayTextForValues:(NSArray *)values {
-	NSLog(@"-display text for values %@, %@", values, [super displayTextForValues:values]);
 	if ([values count] == 1 && [values[0] integerValue] == NSIntegerMax) {
 		return @""; // @"Create List...";
 	}
