@@ -11,6 +11,7 @@
 @implementation CWViewController
 
 - (void)load {
+	[self setupAppIfNeeded];
 	[self loadPlist:@"CWAddItem"];
 	[self loadLists];
 
@@ -18,14 +19,71 @@
 	[self setSubmitEventHandler:self selector:@selector(submitEventHandler:)];
 }
 
+- (void)setupAppIfNeeded {
+	if (!_clearApp) {
+		SBApplicationController *controller = [%c(SBApplicationController) sharedInstance];
+
+		SBApplication *clear = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear"];
+		SBApplication *clearplus = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear.universal"];
+
+		if (!clear) {
+			if (!clearplus) {
+				[self showMessage:@"You need to install Clear or Clear+ from App Store to use this widget."];
+				[self dismiss];
+				return;
+			}
+
+			_clearApp = clearplus;
+		}
+
+		else {
+			_clearApp = clear;
+		}
+	}
+}
+
+
 - (void)loadLists {
-	// Load list values from IPC...
+	// Load list values from SQLite database...
+	NSArray *listsAndValues = [self listsandValuesFromDatabase];
 	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
-	[item setListItemTitles:@[@"Create List..."] values:@[@(NSIntegerMax)]];
+	[item setListItemTitles:[listsAndValues[0] arrayByAddingObject:@"Create List..."] values:[listsAndValues[1] arrayByAddingObject:@(NSIntegerMax)]];
+}
+
+// Returns an array with two sub-arrays, first for names, second for indices
+- (NSArray *)listsandValuesFromDatabase {
+	NSString *resourcePath = [[NSBundle bundleWithPath:_clearApp.path] resourcePath];
+	NSString *databasePath = [resourcesPath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Application Support/com.realmacsoftware.clear/BackendTasks.sqlite"];
+
+	NSArray *sqliteData = [self parsedSQLiteListNamesForPath:databasePath];
+	NSMutableArray *values = [[[NSMutableArray alloc] init] autorelease];
+	for (int i = 0; i < sqliteData.count; i++) {
+		[values addObject:@(i)];
+	}
+
+	return [NSArray arrayWithObjects:sqliteData, values];
+}
+
+// Derived from infragistics (Torrey Betts) Sqlite example 
+-(NSArray *)parsedSQLiteListNamesForPath:(NSString *)path {
+	NSMutableArray *listNames = [[[NSMutableArray alloc] init] autorelease]; 
+	sqlite3 *database;
+
+	if (sqlite3_open([path UTF8String], &database) == SQLITE_OK) {
+		const char *sql = "select title from lists"; 
+		sqlite3_stmt *selectStatement; 
+		if (sqlite3_prepare_v2(database, sql, -1, &selectStatement, NULL) == SQLITE_OK) { 
+			while(sqlite3_step(selectStatement) == SQLITE_ROW) { 
+				[listNames addObject:[NSString stringWithUTF8String:(char *)sqlite3_column_text(selectStatement, 0)]]; 
+			}
+		}
+	}
+
+	sqlite3_close(database);
+	return listNames;
 }
 
 - (void)itemValueChangedEventHandler:(PWWidgetItem *)item oldValue:(id)oldValue {
-	NSLog(@"item:%@, oldValue:%@", item, oldValue);
 	if ([item.key isEqualToString:@"list"]) {
 		NSArray *value = (NSArray *) item.value;
 
@@ -62,12 +120,12 @@
 	NSString *task = values[@"task"];
 	NSString *scheme;
 	if (_lists && _lists.count > 1) {
-		scheme = [@"clearapp://task/create?listPosition=0&taskName=" stringByAppendingString:task];
+		NSUInteger selectedListIndex = [(values[@"list"])[0] unsignedIntegerValue];
+		scheme = [NSString stringWithFormat:@"clearapp://task/create?taskName=%@&listName=%@", task, _lists[selectedListIndex]];
 	}
 
 	else {
-		NSUInteger selectedListIndex = [(values[@"list"])[0] unsignedIntegerValue];
-		scheme = [NSString stringWithFormat:@"clearapp://task/create?taskName=%@&listName=%@", task, _lists[selectedListIndex]];
+		scheme = [@"clearapp://task/create?taskName=" stringByAppendingString:task];
 	}
 
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];

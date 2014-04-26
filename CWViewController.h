@@ -9,6 +9,7 @@
 
 @interface CWViewController : PWContentItemViewController {
 	NSArray *_lists;
+	SBApplication *_clearApp;
 }
 
 @end
