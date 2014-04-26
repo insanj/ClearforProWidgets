@@ -1,7 +1,7 @@
 Clear For ProWidgets
 =======================
 
-Use Clear from [ProWidgets](http://prowidgets.net/)!
+Use Clear from [ProWidgets](http://prowidgets.net/). Proof of concept for somewhat dense ProWidgets usage and ObjcIPC. Unfortunately, due to some strange bugs in the IPC framework (that I've yet to investigate), Clear for ProWidgets doesn't currently have dynamic reading of themes and lists.
 
 ---------------------------------------
 [Creative Commons Attribution-NonCommercial 3.0 United States License](http://creativecommons.org/licenses/by-nc/3.0/us/) as of 2014:
