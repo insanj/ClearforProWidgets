@@ -1,7 +1,9 @@
 Clear For ProWidgets
 =======================
 
-Use Clear from [ProWidgets](http://prowidgets.net/). Proof of concept for somewhat dense ProWidgets usage and ObjcIPC. Unfortunately, due to some strange bugs in the IPC framework (that I've yet to investigate), Clear for ProWidgets doesn't currently have dynamic reading of themes and lists.
+Use Clear from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), and live preferences and database reading, providing a beautiful, seamless interface. Available from [BigBoss](http://thebigboss.org) for free.
+
+![Three-pronged screenshot of all widget usage](Screenie.png)
 
 ---------------------------------------
 [Creative Commons Attribution-NonCommercial 3.0 United States License](http://creativecommons.org/licenses/by-nc/3.0/us/) as of 2014:

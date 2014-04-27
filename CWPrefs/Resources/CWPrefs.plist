@@ -9,7 +9,7 @@
 			<key>cell</key>	          <string>PSGroupCell</string>
 			<key>label</key>             <string>About</string>
             <key>footerAlignment</key>   <integer>1</integer>
-            <key>footerText</key>		<string>Thanks for using Clear for ProWidgets (1.0) by Julian Weiss. Please send all feedback directly from Cydia.</string>
+            <key>footerText</key>		<string>Thanks for using Clear for ProWidgets (1.0). Please send all feedback directly from Cydia.</string>
 		</dict>
 
         <dict>
@@ -36,7 +36,7 @@
 		<dict>
 			<key>cell</key>		 	 <string>PSGroupCell</string>
 			<key>footerAlignment</key>   <integer>1</integer>
-			<key>footerText</key>		<string>© 2014 Julian Weiss</string>
+			<key>footerText</key>		<string>Clear for ProWidgets has no affiliation with Realmac Software or other Clear products.&#10;© 2014 Julian Weiss</string>
 		</dict>
 
 	</array>

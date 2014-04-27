@@ -17,5 +17,7 @@ SUBPROJECTS += CWPrefs
 # SUBPROJECTS += CWIPC
 include $(THEOS_MAKE_PATH)/aggregate.mk
 
+before-stage::
+	find . -name ".DS_Store" -delete
 internal-after-install::
 	install.exec "killall -9 backboardd"

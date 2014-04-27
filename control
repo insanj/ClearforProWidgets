@@ -2,10 +2,10 @@ Package: com.insanj.clearforprowidgets
 Name: Clear for ProWidgets
 Pre-Depends: firmware (>= 7.0)
 Depends: mobilesubstrate, cc.tweak.prowidgets
-Version: 0.1
+Version: 0.9
 Architecture: iphoneos-arm
 Description: Add a task to your Clear list.
 Maintainer: Julian Weiss <insanjmail@insanj.com>
 Author: Julian (insanj) Weiss
 Section: Addons (ProWidgets)
-Icon: file:///Library/PreferenceBundles/CWPrefs.bundle/icon.png
+Icon: file:///Library/PreferenceBundles/CWPrefs.bundle/icon@2x.png
