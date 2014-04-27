@@ -19,8 +19,8 @@
 }
 
 - (NSDictionary *)clearThemeFromSettings {
-	NSString *resourcesPath = [[NSBundle bundleWithPath:_clearApp.path] resourcePath];
-	NSString *preferencesPath = [resourcesPath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Preferences/com.realmacsoftware.clear.plist"];
+	NSString *resourcePath = [[NSBundle bundleWithPath:_clearApp.path] resourcePath];
+	NSString *preferencesPath = [resourcePath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Preferences/com.realmacsoftware.clear.plist"];
 	NSDictionary *clearPreferences = [NSDictionary dictionaryWithContentsOfFile:preferencesPath];
 	NSString *themeKey = [clearPreferences objectForKey:@"ThemeIdentifier"];
 	return [self themeComponentsFromKey:themeKey];
@@ -112,7 +112,7 @@
 - (void)load {
 	[self setupAppIfNeeded];
 
-	_addTaskImage = [[UIImage imageNamed:@"AddListPlus" inBundle:[NSBundle bundleWithPath:_clearApp.path]] retain];
+	// _addTaskImage = [UIImage imageNamed:@"AddListPlus" inBundle:[NSBundle bundleWithPath:_clearApp.path]];
 	_viewController = [[CWViewController alloc] initForWidget:self];
 	[self pushViewController:_viewController animated:NO];
 }
@@ -140,11 +140,12 @@
 	}
 }
 
-- (void)dealloc {
+
+/* - (void)dealloc {
 	[_viewController release];
 	[_clearApp release];
 	[_addTaskImage release];
 	[super dealloc];
-}
+}*/
 
 @end

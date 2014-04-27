@@ -8,8 +8,8 @@
 #include <SpringBoard/SBApplication.h>
 
 @interface CWViewController : PWContentItemViewController {
-	NSArray *_lists;
 	SBApplication *_clearApp;
+	NSArray *_lists;
 }
 
 @end

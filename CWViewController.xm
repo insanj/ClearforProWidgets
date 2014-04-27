@@ -13,7 +13,7 @@
 - (void)load {
 	[self setupAppIfNeeded];
 	[self loadPlist:@"CWAddItem"];
-	[self loadLists];
+	[self setupClearLists];
 
 	[self setItemValueChangedEventHandler:self selector:@selector(itemValueChangedEventHandler:oldValue:)];
 	[self setSubmitEventHandler:self selector:@selector(submitEventHandler:)];
@@ -26,24 +26,11 @@
 		SBApplication *clear = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear"];
 		SBApplication *clearplus = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear.universal"];
 
-		if (!clear) {
-			if (!clearplus) {
-				[self showMessage:@"You need to install Clear or Clear+ from App Store to use this widget."];
-				[self dismiss];
-				return;
-			}
-
-			_clearApp = clearplus;
-		}
-
-		else {
-			_clearApp = clear;
-		}
+		_clearApp = clear ? clear : clearplus;
 	}
 }
 
-
-- (void)loadLists {
+- (void)setupClearLists {
 	// Load list values from SQLite database...
 	NSArray *listsAndValues = [self listsandValuesFromDatabase];
 	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
@@ -53,20 +40,20 @@
 // Returns an array with two sub-arrays, first for names, second for indices
 - (NSArray *)listsandValuesFromDatabase {
 	NSString *resourcePath = [[NSBundle bundleWithPath:_clearApp.path] resourcePath];
-	NSString *databasePath = [resourcesPath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Application Support/com.realmacsoftware.clear/BackendTasks.sqlite"];
+	NSString *databasePath = [resourcePath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Application Support/com.realmacsoftware.clear/BackendTasks.sqlite"];
 
-	NSArray *sqliteData = [self parsedSQLiteListNamesForPath:databasePath];
-	NSMutableArray *values = [[[NSMutableArray alloc] init] autorelease];
+	NSMutableArray *sqliteData = [self parsedSQLiteListNamesForPath:databasePath];
+	NSMutableArray *values = [[NSMutableArray alloc] init];
 	for (int i = 0; i < sqliteData.count; i++) {
 		[values addObject:@(i)];
 	}
 
-	return [NSArray arrayWithObjects:sqliteData, values];
+	return @[sqliteData, values];
 }
 
-// Derived from infragistics (Torrey Betts) Sqlite example 
--(NSArray *)parsedSQLiteListNamesForPath:(NSString *)path {
-	NSMutableArray *listNames = [[[NSMutableArray alloc] init] autorelease]; 
+// Derived from infragistics (Torrey Betts) Sqlite3 example 
+-(NSMutableArray *)parsedSQLiteListNamesForPath:(NSString *)path {
+	NSMutableArray *listNames = [[NSMutableArray alloc] init]; 
 	sqlite3 *database;
 
 	if (sqlite3_open([path UTF8String], &database) == SQLITE_OK) {
@@ -91,7 +78,7 @@
 		// to Create. Since the last value inserted is NSIntegerMax, if the item that's tapped
 		// is also NSIntegerMax, then it's clear we should Create.
 		if ([value[0] isEqual:[[(PWWidgetItemListValue *)item listItemValues] lastObject]]) {
-			__block NSArray *oldListValue = [oldValue retain];
+			__block NSArray *oldListValue = oldValue;
 			[self.widget prompt:@"What would you like to name your new Clear list?" title:@"Create List" buttonTitle:@"Add" defaultValue:nil style:UIAlertViewStylePlainTextInput completion:^(BOOL cancelled, NSString *firstValue, NSString *secondValue) {
 				if (cancelled) {
 					[item setValue:oldListValue];
@@ -100,8 +87,6 @@
 				else {
 					[self createList:firstValue];
 				}
-
-				[oldListValue release], oldListValue = nil;
 			}];
 		}
 	}
@@ -109,31 +94,21 @@
 
 - (void)createList:(NSString *)name {
 	NSString *scheme = [@"clearapp://list/create?listName=" stringByAppendingString:name];
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 
-	[self loadLists];
+	NSLog(@"[ClearForProWidgets] Creating list with using URL-scheme [%@]", scheme);
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
 - (void)submitEventHandler:(NSDictionary *)values {
 	[self.widget dismiss];
 
+	int list = [values[@"list"][0] intValue] + 1;
 	NSString *task = values[@"task"];
-	NSString *scheme;
-	if (_lists && _lists.count > 1) {
-		NSUInteger selectedListIndex = [(values[@"list"])[0] unsignedIntegerValue];
-		scheme = [NSString stringWithFormat:@"clearapp://task/create?taskName=%@&listName=%@", task, _lists[selectedListIndex]];
-	}
+	NSString *scheme = [NSString stringWithFormat:@"clearapp://task/create?listPosition=%i&taskName=%@", list, task];
 
-	else {
-		scheme = [@"clearapp://task/create?taskName=" stringByAppendingString:task];
-	}
-
+	NSLog(@"[ClearForProWidgets] Creating task with values [%@] using URL-scheme [%@]", values, scheme);
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
-- (void)dealloc {
-	[_lists release];
-	[super dealloc];
-}
 
 @end
