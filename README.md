@@ -1,7 +1,7 @@
 Clear For ProWidgets
 =======================
 
-Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), live preferences (plist) and database (sqlite3) reading, and instantaneous background task adding ([OBJCIPC](https://github.com/a1anyip/libobjcipc)), providing a beautiful, seamless Clear experience. Available from [BigBoss](http://thebigboss.org) for free.
+Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), live preferences (plist) and database (sqlite3) reading, and instantaneous background task adding ([OBJCIPC](https://github.com/a1anyip/libobjcipc)), providing a beautiful, seamless [Clear](http://realmacsoftware.com/clear) experience. Available from [BigBoss](http://thebigboss.org) for free.
 
 ![Three-pronged screenshot of all widget usage](Screenie.png)
 
@@ -9,7 +9,7 @@ Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget 
 [Creative Commons Attribution-NonCommercial 3.0 United States License](http://creativecommons.org/licenses/by-nc/3.0/us/) as of 2014:
 
 	Creative Commons Attribution-NonCommercial 3.0 United States License
-	Please visit above link for full license.
+	Please visit a1bove link for full license.
 	Human-readable summary of your abilities has been transcribed below.
 
 	You are free to:

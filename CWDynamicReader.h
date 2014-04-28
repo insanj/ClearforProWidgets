@@ -4,7 +4,11 @@
 
 #include <UIKit/UIKit.h>
 #include <sqlite3.h>
-#define CWLOG(fmt, ...) NSLog((@"[ClearForProWidgets, Line %d] " fmt), __LINE__, ##__VA_ARGS__)
+#ifdef DEBUG
+	#define CWLOG(fmt, ...) NSLog((@"[ClearForProWidgets] %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+	#define CWLOG(fmt, ...) NSLog((@"[ClearForProWidgets]" fmt), ##__VA_ARGS__)
+#endif
 
 @interface CWDynamicReader : NSObject
 

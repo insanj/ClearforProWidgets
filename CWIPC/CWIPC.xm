@@ -4,17 +4,25 @@
 
 #import <objc/runtime.h>
 #import <libobjcipc/objcipc.h>
-#define CWLOG(fmt, ...) NSLog((@"[ClearForProWidgets, Line %d] " fmt), __LINE__, ##__VA_ARGS__)
+
+#ifdef DEBUG
+	#define CWLOG(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+	#define CWLOG(fmt, ...) NSLog((@"" fmt), ##__VA_ARGS__)
+#endif
 
 %ctor {
-	CWLOG(@"[ClearForProWidgets] Registering IPC listener for widget SpringBoard messages...");
+	CWLOG(@"Registering IPC listener for widget SpringBoard messages...");
+
+	@autoreleasepool{
 	[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create.Task" handler:^NSDictionary *(NSDictionary *message) {
 		NSURL *schemeURL = message[@"schemeURL"];
 		UIApplication *app = [UIApplication sharedApplication];
 		BOOL loaded = [app openURL:schemeURL];
 
-		CWLOG(@"[ClearForProWidgets] Received incoming Create Task message from SpringBoard (%@ -> %@)...", app, schemeURL);
+		CWLOG(@"Received incoming Create Task message from SpringBoard (%@ -> %@)...", app, schemeURL);
 		return @{ @"loaded" : @(loaded) };
 	 }];
+}
 
 }

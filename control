@@ -2,7 +2,7 @@ Package: com.insanj.clearforprowidgets
 Name: Clear for ProWidgets
 Pre-Depends: firmware (>= 7.0)
 Depends: mobilesubstrate, cc.tweak.prowidgets
-Version: 0.9001.1
+Version: 1.0
 Architecture: iphoneos-arm
 Description: Use Clear on the fly.
 Maintainer: Julian Weiss <insanjmail@gmail.com>

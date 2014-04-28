@@ -10,7 +10,7 @@
 		CWDynamicReader *saver = [[CWDynamicReader alloc] init];
 		BOOL worked = [saver savePath];
 
-		NSLog(@"[ClearForProWidgets] Saved path (%@) to Clear app from SpringBoard", worked ? @"YES" : @"NO");
+		CWLOG(@"Saved path (%@) to Clear app from SpringBoard", worked ? @"YES" : @"NO");
 	}];
 
 	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"CWSavePath" object:nil];

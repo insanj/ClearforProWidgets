@@ -69,9 +69,9 @@
 	NSString *scheme = [NSString stringWithFormat:@"clearapp://task/create?listName=%@&taskName=%@", list, task];
 
 	NSURL *schemeURL = [NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	CWLOG(@"[ClearForProWidgets] Creating task with values [%@] using URL-scheme [%@]...", values, scheme);
+	CWLOG(@"Creating task with values [%@] using URL-scheme [%@]...", values, scheme);
 	[OBJCIPC sendMessageToAppWithIdentifier:_reader.clearIdentifier messageName:@"CWIPC.Create.Task" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
-		CWLOG(@"[ClearForProWidgets] Created task in Clear with response: %@", response); 
+		CWLOG(@"Created task in Clear with response: %@", response); 
 	}];
 }
 
