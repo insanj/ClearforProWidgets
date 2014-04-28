@@ -6,10 +6,8 @@
 #include <libprowidgets/WidgetItems/PWWidgetItemWebView.h>
 #include <SpringBoard/SBApplicationController.h>
 #include <SpringBoard/SBApplication.h>
+#import "CWDynamicReader.h"
 
-@interface CWViewController : PWContentItemViewController {
-	SBApplication *_clearApp;
-	NSArray *_lists;
-}
+@interface CWViewController : PWContentItemViewController
 
 @end

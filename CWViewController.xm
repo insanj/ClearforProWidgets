@@ -6,12 +6,9 @@
 #import "CWWidget.h"
 #import "CWItemListValue.h"
 
-#define CWCONTENTHEIGHT 270.0
-
 @implementation CWViewController
 
 - (void)load {
-	[self setupAppIfNeeded];
 	[self loadPlist:@"CWAddItem"];
 	[self setupClearLists];
 
@@ -19,55 +16,19 @@
 	[self setSubmitEventHandler:self selector:@selector(submitEventHandler:)];
 }
 
-- (void)setupAppIfNeeded {
-	if (!_clearApp) {
-		SBApplicationController *controller = [%c(SBApplicationController) sharedInstance];
-
-		SBApplication *clear = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear"];
-		SBApplication *clearplus = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear.universal"];
-
-		_clearApp = clear ? clear : clearplus;
-	}
-}
-
 - (void)setupClearLists {
 	// Load list values from SQLite database...
-	NSArray *listsAndValues = [self listsandValuesFromDatabase];
-	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
-	[item setListItemTitles:[listsAndValues[0] arrayByAddingObject:@"Create List..."] values:[listsAndValues[1] arrayByAddingObject:@(NSIntegerMax)]];
-}
-
-// Returns an array with two sub-arrays, first for names, second for indices
-- (NSArray *)listsandValuesFromDatabase {
-	NSString *resourcePath = [[NSBundle bundleWithPath:_clearApp.path] resourcePath];
-	NSString *databasePath = [resourcePath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Application Support/com.realmacsoftware.clear/BackendTasks.sqlite"];
-
-	NSMutableArray *sqliteData = [self parsedSQLiteListNamesForPath:databasePath];
+	NSArray *lists = [[[CWDynamicReader alloc] init] listsFromDatabase];
 	NSMutableArray *values = [[NSMutableArray alloc] init];
-	for (int i = 0; i < sqliteData.count; i++) {
+	for (int i = 0; i < lists.count; i++) {
 		[values addObject:@(i)];
 	}
 
-	return @[sqliteData, values];
-}
+	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
+	[item setListItemTitles:[lists arrayByAddingObject:@"Create List..."] values:[values arrayByAddingObject:@(NSIntegerMax)]];
 
-// Derived from infragistics (Torrey Betts) Sqlite3 example 
--(NSMutableArray *)parsedSQLiteListNamesForPath:(NSString *)path {
-	NSMutableArray *listNames = [[NSMutableArray alloc] init]; 
-	sqlite3 *database;
-
-	if (sqlite3_open([path UTF8String], &database) == SQLITE_OK) {
-		const char *sql = "select title from lists"; 
-		sqlite3_stmt *selectStatement; 
-		if (sqlite3_prepare_v2(database, sql, -1, &selectStatement, NULL) == SQLITE_OK) { 
-			while(sqlite3_step(selectStatement) == SQLITE_ROW) { 
-				[listNames addObject:[NSString stringWithUTF8String:(char *)sqlite3_column_text(selectStatement, 0)]]; 
-			}
-		}
-	}
-
-	sqlite3_close(database);
-	return listNames;
+	NSNumber *savedValue = [[NSDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.insanj.clearforprowidgets.plist"]] objectForKey:@"defaultList"];
+	[item setCellValue:savedValue]; // TODO: ?!
 }
 
 - (void)itemValueChangedEventHandler:(PWWidgetItem *)item oldValue:(id)oldValue {
@@ -109,6 +70,5 @@
 	NSLog(@"[ClearForProWidgets] Creating task with values [%@] using URL-scheme [%@]", values, scheme);
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
-
 
 @end

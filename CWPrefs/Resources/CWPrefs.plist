@@ -4,39 +4,45 @@
 <dict>
 	<key>title</key>	<string>Clear</string>
 	<key>items</key>	<array>
+		<dict>
+			<key>cell</key> 			<string>PSGroupCell</string>
+		</dict>
+
+		<dict>
+		    <key>cell</key> 			 <string>PSLinkListCell</string>
+            <key>detail</key> 			 <string>PSListItemsController</string>
+		    <key>key</key> 				 <string>defaultList</string>
+            <key>staticTextMessage</key> <string>Lists are dynamically read from Clear every activation.</string>
+            <key>defaults</key>    		 <string>com.insanj.clearforprowidgets</string>
+            <key>label</key> 	    	 <string>Default List</string>
+            <key>titlesDataSource</key>  <string>listTitles:</string>
+            <key>valuesDataSource</key>  <string>listValues:</string>
+        </dict>
 
 	    <dict>
-			<key>cell</key>	          <string>PSGroupCell</string>
-			<key>label</key>             <string>About</string>
-            <key>footerAlignment</key>   <integer>1</integer>
+			<key>cell</key> 			<string>PSGroupCell</string>
+			<key>label</key>            <string>About</string>
+            <key>footerAlignment</key>  <integer>1</integer>
             <key>footerText</key>		<string>Thanks for using Clear for ProWidgets (1.0). Please send all feedback directly from Cydia.</string>
 		</dict>
 
         <dict>
-            <key>cell</key> 		 <string>PSButtonCell</string>
-            <key>label</key> 	    <string>Developer (@insanj)</string>
-            <key>icon</key> 		 <string>twitter.png</string>
-            <key>action</key> 	   <string>insanj</string>
+            <key>cell</key> 	<string>PSButtonCell</string>
+            <key>label</key> 	<string>Developer</string>
+            <key>icon</key> 	<string>twitter.png</string>
+            <key>action</key> 	<string>twitter</string>
         </dict>
 
         <dict>
-            <key>cell</key> 		 <string>PSButtonCell</string>
-            <key>label</key> 	    <string>Source (Github)</string>
-            <key>icon</key> 		 <string>safari.png</string>
-            <key>action</key> 	   <string>website</string>
+            <key>cell</key> 	<string>PSButtonCell</string>
+            <key>label</key> 	<string>Source</string>
+            <key>icon</key> 	<string>github.png</string>
+            <key>action</key> 	<string>github</string>
         </dict>
 
 		<dict>
-			<key>cell</key> 		 <string>PSButtonCell</string>
-			<key>label</key> 	    <string>Donate (PayPal)</string>
-			<key>icon</key> 		 <string>paypal.png</string>
-			<key>action</key> 	   <string>donate</string>
-		</dict>
-
-		<dict>
-			<key>cell</key>		 	 <string>PSGroupCell</string>
-			<key>footerAlignment</key>   <integer>1</integer>
-			<key>footerText</key>		<string>Clear for ProWidgets has no affiliation with Realmac Software or other Clear products.&#10;© 2014 Julian Weiss</string>
+			<key>cell</key>		 		<string>PSGroupCell</string>
+			<key>footerText</key>		<string>Clear for ProWidgets has no affiliation with Realmac Software or other Clear products.&#10;&#10;© 2014 Julian Weiss</string>
 		</dict>
 
 	</array>

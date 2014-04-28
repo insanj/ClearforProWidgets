@@ -14,6 +14,7 @@ ClearForProWidgets_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 SUBPROJECTS += CWPrefs
+SUBPROJECTS += CWInjections
 # SUBPROJECTS += CWIPC
 include $(THEOS_MAKE_PATH)/aggregate.mk
 

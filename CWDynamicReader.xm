@@ -2,24 +2,46 @@
 // Created by Julian (insanj) Weiss 2014
 // Source and license fully available on GitHub.
 
-#import "CWViewController.h"
-#import "CWWidget.h"
+#import "CWDynamicReader.h"
+#include <SpringBoard/SBApplicationController.h>
+#include <SpringBoard/SBApplication.h>
 
-@implementation CWWidget
+@implementation CWDynamicReader
 
-- (void)configure {
-	[self setupAppIfNeeded];
-	self.title = @"Clear";
+- (CWDynamicReader *)init {
+	self = [super init];
+	if (self) {
+		SBApplicationController *controller = [%c(SBApplicationController) sharedInstance];
 
-	// NSDictionary *ipcResponse = [OBJCIPC sendMessageToAppWithIdentifier:_clearApp.displayIdentifier messageName:@"CWCurrentTheme" dictionary:nil];
-	// NSLog(@"[CWWidget] Received proper reply from CWIPC for theme request [%@]...", ipcResponse);
-	NSDictionary *clearTheme = [self clearThemeFromSettings];
-	self.preferredTintColor = clearTheme[@"preferredTintColor"]; // ipcResponse[@"tintColor"];
-	self.preferredBarTextColor = clearTheme[@"preferredBarTextColor"]; // ipcResponse[@"textColor"];
+		SBApplication *clear = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear"];
+		SBApplication *clearplus = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear.universal"];
+
+		_clearPath = clear ? clear.path : clearplus.path;
+	}
+
+	return self;
 }
 
-- (NSDictionary *)clearThemeFromSettings {
-	NSString *resourcePath = [[NSBundle bundleWithPath:_clearApp.path] resourcePath];
+- (CWDynamicReader *)initWithPath:(NSString *)path {
+	self = [super init];
+	if (self) {
+		_clearPath = path;
+	}
+
+	return self;
+}
+
+- (CWDynamicReader *)initWithSavedPath {
+	self = [super init];
+	if (self) {
+		_clearPath = [[NSDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.insanj.clearforprowidgets.plist"]] objectForKey:@"savedPath"];
+	}
+
+	return self;
+}
+
+- (NSDictionary *)themeFromSettings {
+	NSString *resourcePath = [[NSBundle bundleWithPath:_clearPath] resourcePath];
 	NSString *preferencesPath = [resourcePath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Preferences/com.realmacsoftware.clear.plist"];
 	NSDictionary *clearPreferences = [NSDictionary dictionaryWithContentsOfFile:preferencesPath];
 	NSString *themeKey = [clearPreferences objectForKey:@"ThemeIdentifier"];
@@ -109,43 +131,44 @@
 	}
 }
 
-- (void)load {
-	[self setupAppIfNeeded];
-
-	// _addTaskImage = [UIImage imageNamed:@"AddListPlus" inBundle:[NSBundle bundleWithPath:_clearApp.path]];
-	_viewController = [[CWViewController alloc] initForWidget:self];
-	[self pushViewController:_viewController animated:NO];
+// Returns an array with two sub-arrays, first for names, second for indices
+- (NSArray *)listsFromDatabase {
+	NSString *resourcePath = [[NSBundle bundleWithPath:_clearPath] resourcePath];
+	NSString *databasePath = [resourcePath stringByReplacingOccurrencesOfString:@"Clear.app" withString:@"Library/Application Support/com.realmacsoftware.clear/BackendTasks.sqlite"];
+	return [self parsedSQLiteListNamesForPath:databasePath];
 }
 
-- (void)setupAppIfNeeded {
-	if (!_clearApp) {
-		SBApplicationController *controller = [%c(SBApplicationController) sharedInstance];
+// Derived from infragistics (Torrey Betts) Sqlite3 example 
+- (NSArray *)parsedSQLiteListNamesForPath:(NSString *)path {
+	NSMutableArray *listNames = [[NSMutableArray alloc] init]; 
+	sqlite3 *database;
 
-		SBApplication *clear = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear"];
-		SBApplication *clearplus = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear.universal"];
-
-		if (!clear) {
-			if (!clearplus) {
-				[self showMessage:@"You need to install Clear or Clear+ from App Store to use this widget."];
-				[self dismiss];
-				return;
+	if (sqlite3_open([path UTF8String], &database) == SQLITE_OK) {
+		const char *sql = "select title from lists"; 
+		sqlite3_stmt *selectStatement; 
+		if (sqlite3_prepare_v2(database, sql, -1, &selectStatement, NULL) == SQLITE_OK) { 
+			while(sqlite3_step(selectStatement) == SQLITE_ROW) { 
+				[listNames addObject:[NSString stringWithUTF8String:(char *)sqlite3_column_text(selectStatement, 0)]]; 
 			}
-
-			_clearApp = clearplus;
-		}
-
-		else {
-			_clearApp = clear;
 		}
 	}
+
+	sqlite3_close(database);
+	return [NSArray arrayWithArray:listNames];
 }
 
+- (BOOL)savePath {
+	NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.insanj.clearforprowidgets.plist"];
+	NSMutableDictionary *preferences = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+	if (!preferences) {
+		preferences = @{@"savedPath" : _clearPath}.mutableCopy;
+	}
 
-/* - (void)dealloc {
-	[_viewController release];
-	[_clearApp release];
-	[_addTaskImage release];
-	[super dealloc];
-}*/
+	else {
+		[preferences setValue:_clearPath forKey:@"savedPath"]; 
+	}
+
+	return [preferences writeToFile:path atomically:YES];
+}
 
 @end
