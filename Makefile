@@ -8,14 +8,12 @@ BUNDLE_NAME = ClearForProWidgets
 ClearForProWidgets_FILES = $(wildcard *.xm)
 ClearForProWidgets_INSTALL_PATH = /Library/ProWidgets/Widgets/
 ClearForProWidgets_FRAMEWORKS = UIKit CoreGraphics QuartzCore
-ClearForProWidgets_LIBRARIES = prowidgets sqlite3 #objcipc
+ClearForProWidgets_LIBRARIES = prowidgets sqlite3 objcipc
 ClearForProWidgets_BUNDLE_EXTENSION = widget
 ClearForProWidgets_CFLAGS = -fobjc-arc
 
 include $(THEOS_MAKE_PATH)/bundle.mk
-SUBPROJECTS += CWPrefs
-SUBPROJECTS += CWInjections
-# SUBPROJECTS += CWIPC
+SUBPROJECTS = CWInjections CWPrefs CWIPC
 include $(THEOS_MAKE_PATH)/aggregate.mk
 
 before-stage::

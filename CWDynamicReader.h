@@ -1,9 +1,10 @@
 // Clear for ProWidgets
-// Created by Julian (insanj) Weiss 2014
+// Created by Julian (insanj) Weiss (c) 2014
 // Source and license fully available on GitHub.
 
 #include <UIKit/UIKit.h>
 #include <sqlite3.h>
+#define CWLOG(fmt, ...) NSLog((@"[ClearForProWidgets, Line %d] " fmt), __LINE__, ##__VA_ARGS__)
 
 @interface CWDynamicReader : NSObject
 

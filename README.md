@@ -1,7 +1,7 @@
 Clear For ProWidgets
 =======================
 
-Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), and live preferences and database reading, providing a beautiful, seamless interface. Available from [BigBoss](http://thebigboss.org) for free.
+Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), live preferences (plist) and database (sqlite3) reading, and instantaneous background task adding ([OBJCIPC](https://github.com/a1anyip/libobjcipc)), providing a beautiful, seamless Clear experience. Available from [BigBoss](http://thebigboss.org) for free.
 
 ![Three-pronged screenshot of all widget usage](Screenie.png)
 

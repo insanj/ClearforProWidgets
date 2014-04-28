@@ -1,5 +1,5 @@
 // Clear for ProWidgets
-// Created by Julian (insanj) Weiss 2014
+// Created by Julian (insanj) Weiss (c) 2014
 // Source and license fully available on GitHub.
 
 #import "CWWidget.h"
@@ -10,18 +10,14 @@
 	[self setupAppIfNeeded];
 	self.title = @"Clear";
 
-	// NSDictionary *ipcResponse = [OBJCIPC sendMessageToAppWithIdentifier:_clearApp.displayIdentifier messageName:@"CWCurrentTheme" dictionary:nil];
-	// NSLog(@"[CWWidget] Received proper reply from CWIPC for theme request [%@]...", ipcResponse);
 	NSDictionary *clearTheme = [[[CWDynamicReader alloc] initWithPath:_clearApp.path] themeFromSettings];
-	self.preferredTintColor = clearTheme[@"preferredTintColor"]; // ipcResponse[@"tintColor"];
-	self.preferredBarTextColor = clearTheme[@"preferredBarTextColor"]; // ipcResponse[@"textColor"];
+	self.preferredTintColor = clearTheme[@"preferredTintColor"];
+	self.preferredBarTextColor = clearTheme[@"preferredBarTextColor"];
 }
-
 
 - (void)load {
 	[self setupAppIfNeeded];
 
-	// _addTaskImage = [UIImage imageNamed:@"AddListPlus" inBundle:[NSBundle bundleWithPath:_clearApp.path]];
 	_viewController = [[CWViewController alloc] initForWidget:self];
 	[self pushViewController:_viewController animated:NO];
 }

@@ -1,28 +1,20 @@
 // Clear for ProWidgets
-// Created by Julian (insanj) Weiss 2014
+// Created by Julian (insanj) Weiss (c) 2014
 // Source and license fully available on GitHub.
 
 #import <objc/runtime.h>
 #import <libobjcipc/objcipc.h>
+#define CWLOG(fmt, ...) NSLog((@"[ClearForProWidgets, Line %d] " fmt), __LINE__, ##__VA_ARGS__)
 
-@interface RMTheme : NSObject
-@property(nonatomic, retain) UIColor *tasksBackgroundColor;
-@property(nonatomic, retain) UIColor *taskTextColor;
-+ (id)sharedThemeManager;
-@end
+%ctor {
+	CWLOG(@"[ClearForProWidgets] Registering IPC listener for widget SpringBoard messages...");
+	[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create.Task" handler:^NSDictionary *(NSDictionary *message) {
+		NSURL *schemeURL = message[@"schemeURL"];
+		UIApplication *app = [UIApplication sharedApplication];
+		BOOL loaded = [app openURL:schemeURL];
 
-@interface RMThemeManager
-@property(nonatomic, retain) RMTheme *currentTheme;
-@end
+		CWLOG(@"[ClearForProWidgets] Received incoming Create Task message from SpringBoard (%@ -> %@)...", app, schemeURL);
+		return @{ @"loaded" : @(loaded) };
+	 }];
 
-static inline __attribute__((constructor)) void init() {
-	@autoreleasepool {
-		[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWCurrentTheme" handler:^NSDictionary *(NSDictionary *dict) {
-			NSLog(@"[CWIPC] Detected IPC incoming message...");
-			RMThemeManager *manager = [objc_getClass("RMThemeManager") sharedThemeManager];
-			RMTheme *theme = manager.currentTheme;
-			NSLog(@"[CWIPC] Recieved IPC message for shared theme [%@]...", theme);
-			return @{@"tintColor" : theme.tasksBackgroundColor, @"textColor" : theme.taskTextColor};
-		}];
-	}
 }

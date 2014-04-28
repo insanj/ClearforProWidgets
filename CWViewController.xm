@@ -1,5 +1,5 @@
 // Clear for ProWidgets
-// Created by Julian (insanj) Weiss
+// Created by Julian (insanj) Weiss (c) 2014
 // Source and license fully available on GitHub.
 
 #import "CWViewController.h"
@@ -16,8 +16,8 @@
 	[self setSubmitEventHandler:self selector:@selector(submitEventHandler:)];
 }
 
+// Load list values from SQLite database
 - (void)setupClearLists {
-	// Load list values from SQLite database...
 	NSArray *lists = [[[CWDynamicReader alloc] init] listsFromDatabase];
 	NSArray *values = [NSArray arrayWithArray:lists];
 
@@ -55,7 +55,7 @@
 - (void)createList:(NSString *)name {
 	NSString *scheme = [@"clearapp://list/create?listName=" stringByAppendingString:name];
 
-	NSLog(@"[ClearForProWidgets] Creating list with using URL-scheme [%@]", scheme);
+	CWLOG(@"[ClearForProWidgets] Creating list with using URL-scheme [%@]", scheme);
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 }
 
@@ -66,8 +66,11 @@
 	NSString *task = values[@"task"];
 	NSString *scheme = [NSString stringWithFormat:@"clearapp://task/create?listName=%@&taskName=%@", list, task];
 
-	NSLog(@"[ClearForProWidgets] Creating task with values [%@] using URL-scheme [%@]", values, scheme);
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+	NSURL *schemeURL = [NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	CWLOG(@"[ClearForProWidgets] Creating task with values [%@] using URL-scheme [%@]...", values, scheme);
+	[OBJCIPC sendMessageToAppWithIdentifier:@"com.realmacsoftware.clear" messageName:@"CWIPC.Create.Task" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
+		CWLOG(@"[ClearForProWidgets] Created task in Clear with response: %@", response); 
+	}];
 }
 
 @end

@@ -1,5 +1,5 @@
 // Clear for ProWidgets
-// Created by Julian (insanj) Weiss 2014
+// Created by Julian (insanj) Weiss (c) 2014
 // Source and license fully available on GitHub.
 
 #include <Foundation/NSDistributedNotificationCenter.h>
