@@ -9,26 +9,16 @@
 
 %ctor {
 	CWLOG(@"Registering IPC listener for widget SpringBoard messages...");
-	@autoreleasepool {
-		[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create" handler:^NSDictionary *(NSDictionary *message) {
-			NSURL *schemeURL = message[@"schemeURL"];
-			UIApplication *app = [UIApplication sharedApplication];
-			BOOL loaded = [app openURL:schemeURL];
+	[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create" handler:^NSDictionary *(NSDictionary *message) {
+		BOOL loaded = [[UIApplication sharedApplication] openURL:message[@"schemeURL"]];
+		return @{ @"loaded" : @(loaded) };
+	 }];
 
-			CWLOG(@"Received incoming Create message from SpringBoard (%@ -> %@)...", app, schemeURL);
-			return @{ @"loaded" : @(loaded) };
-		 }];
+	[OBJCIPC registerIncomingMessageFromAppHandlerForMessageName:@"CWIPC.Lists" handler:^NSDictionary *(NSDictionary *message) { 
+		CWDynamicReader *reader = [[CWDynamicReader alloc] init];
+		NSArray *lists = [reader listsFromDatabase];
+		[reader release];
 
-		[OBJCIPC registerIncomingMessageFromAppHandlerForMessageName:@"CWIPC.Save" handler:^NSDictionary *(NSDictionary *message) { 
-			CWDynamicReader *saver = [[CWDynamicReader alloc] init];
-			BOOL worked = [saver savePath];
-
-			CWLOG(@"Saved path to Clear app from SpringBoard using %@...", saver);
-			return @{ @"worked" : @(worked) };
-		}];
-	}
-
-	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:@{} replyHandler:^(NSDictionary *response) { 
-		CWLOG(@"Received reply from SpringBoard (to SpringBoard) for -savePath call..."); 
+		return @{ @"lists" : lists };
 	}];
 }

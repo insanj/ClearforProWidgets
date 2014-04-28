@@ -1,6 +1,6 @@
 {
 	Filter = {
-		Bundles = ( "com.realmacsoftware.clear", "com.realmacsoftware.clear.universal");
+		Bundles = ( "com.realmacsoftware.clear", "com.realmacsoftware.clear.universal", "com.apple.springboard" );
 		Mode = "Any";
 	};
 }

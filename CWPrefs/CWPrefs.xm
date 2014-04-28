@@ -8,7 +8,7 @@
 #import "../CWDynamicReader.h"
 
 @interface CWListController : PSListController {
-	CWDynamicReader *_reader;
+	NSArray *_lists;
 }
 
 @end
@@ -50,21 +50,17 @@
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://github.com/insanj/ClearforProWidgets"]];
 }
 
-- (void)viewWillAppear:(BOOL)arg1 {
-	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:@{} replyHandler:^(NSDictionary *response) { 
-		CWLOG(@"Received reply from SpringBoard for -savePath call..."); 
-	}];
+- (void)loadView {
+	// Synchronus message send to retrieve lists from database via SpringBoard
+	NSDictionary *response = [OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Lists" dictionary:@{}];
+	CWLOG(@"Recieved response from synchronus message to SpringBoard for Clear lists: %@", response);
+	_lists = response[@"lists"];
 
-	[super viewWillAppear:arg1];
+	[super loadView];
 }
 
 - (NSArray *)listTitles:(id)target {
-	if (!_reader) {
-		_reader = [[CWDynamicReader alloc] initWithSavedPath];
-	}
-
-	NSArray *lists = [_reader listsFromDatabase];
-	return lists;
+	return _lists;
 }
 
 - (NSArray *)listValues:(id)target {
@@ -72,7 +68,9 @@
 }
 
 - (void)dealloc {
-	[_reader release];
+	_lists = nil;
+	[_lists release];
+	
 	[super dealloc];
 }
 
