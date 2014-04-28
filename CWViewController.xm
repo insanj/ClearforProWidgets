@@ -28,7 +28,7 @@
 	[item setListItemTitles:[lists arrayByAddingObject:@"Create List..."] values:[values arrayByAddingObject:@(NSIntegerMax)]];
 
 	NSNumber *savedValue = [[NSDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.insanj.clearforprowidgets.plist"]] objectForKey:@"defaultList"];
-	[item setCellValue:savedValue]; // TODO: ?!
+	item.value = savedValue;
 }
 
 - (void)itemValueChangedEventHandler:(PWWidgetItem *)item oldValue:(id)oldValue {
