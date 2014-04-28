@@ -61,17 +61,11 @@
 	}
 
 	NSArray *lists = [_reader listsFromDatabase];
-
 	return lists;
 }
 
 - (NSArray *)listValues:(id)target {
-	NSMutableArray *values = [NSMutableArray arrayWithArray:[self listTitles:target]];
-	for (int i = 0; i < values.count; i++) {
-		values[i] = @(i);
-	}
-
-	return values;
+	return [self listTitles:target];
 }
 
 - (void)dealloc {

@@ -19,21 +19,20 @@
 - (void)setupClearLists {
 	// Load list values from SQLite database...
 	NSArray *lists = [[[CWDynamicReader alloc] init] listsFromDatabase];
-	NSMutableArray *values = [[NSMutableArray alloc] init];
-	for (int i = 0; i < lists.count; i++) {
-		[values addObject:@(i)];
-	}
+	NSArray *values = [NSArray arrayWithArray:lists];
 
 	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
 	[item setListItemTitles:[lists arrayByAddingObject:@"Create List..."] values:[values arrayByAddingObject:@(NSIntegerMax)]];
 
-	NSNumber *savedValue = [[NSDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.insanj.clearforprowidgets.plist"]] objectForKey:@"defaultList"];
-	item.value = savedValue;
+	NSString *savedValue = [[NSDictionary dictionaryWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:@"/Library/Preferences/com.insanj.clearforprowidgets.plist"]] objectForKey:@"defaultList"];
+	if ([lists containsObject:savedValue]) {
+		item.value = savedValue;
+	}
 }
 
 - (void)itemValueChangedEventHandler:(PWWidgetItem *)item oldValue:(id)oldValue {
 	if ([item.key isEqualToString:@"list"]) {
-		NSArray *value = (NSArray *) item.value;
+		NSArray *value = (NSArray *)item.value;
 
 		// If the value (integer association) is equal to the last value in the list, prompt
 		// to Create. Since the last value inserted is NSIntegerMax, if the item that's tapped
@@ -63,9 +62,9 @@
 - (void)submitEventHandler:(NSDictionary *)values {
 	[self.widget dismiss];
 
-	int list = [values[@"list"][0] intValue] + 1;
+	NSString *list = values[@"list"][0];
 	NSString *task = values[@"task"];
-	NSString *scheme = [NSString stringWithFormat:@"clearapp://task/create?listPosition=%i&taskName=%@", list, task];
+	NSString *scheme = [NSString stringWithFormat:@"clearapp://task/create?listName=%@&taskName=%@", list, task];
 
 	NSLog(@"[ClearForProWidgets] Creating task with values [%@] using URL-scheme [%@]", values, scheme);
 	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];

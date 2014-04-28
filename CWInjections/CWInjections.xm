@@ -12,4 +12,6 @@
 
 		NSLog(@"[ClearForProWidgets] Saved path (%@) to Clear app from SpringBoard", worked ? @"YES" : @"NO");
 	}];
+
+	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"CWSavePath" object:nil];
 }
