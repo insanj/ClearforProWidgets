@@ -28,5 +28,7 @@
 		}];
 	}
 
-	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:nil replyHandler:nil];
+	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:@{} replyHandler:^(NSDictionary *response) { 
+		CWLOG(@"Received reply from SpringBoard (to SpringBoard) for -savePath call..."); 
+	}];
 }

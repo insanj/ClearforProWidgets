@@ -51,8 +51,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)arg1 {
-	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:nil replyHandler:^(NSDictionary *response) { 
-		CWLOG(@"Received reply from SpringBoard for Save path call."); 
+	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:@{} replyHandler:^(NSDictionary *response) { 
+		CWLOG(@"Received reply from SpringBoard for -savePath call..."); 
 	}];
 
 	[super viewWillAppear:arg1];
