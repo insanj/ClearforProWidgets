@@ -17,6 +17,7 @@
 		SBApplication *clearplus = [controller applicationWithDisplayIdentifier:@"com.realmacsoftware.clear.universal"];
 
 		_clearPath = clear ? clear.path : clearplus.path;
+		_clearIdentifier = clear ? clear.displayIdentifier : clearplus.displayIdentifier;
 	}
 
 	return self;

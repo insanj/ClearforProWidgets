@@ -10,6 +10,8 @@
 
 - (void)load {
 	[self loadPlist:@"CWAddItem"];
+
+	_reader = [[CWDynamicReader alloc] init];
 	[self setupClearLists];
 
 	[self setItemValueChangedEventHandler:self selector:@selector(itemValueChangedEventHandler:oldValue:)];
@@ -18,7 +20,7 @@
 
 // Load list values from SQLite database
 - (void)setupClearLists {
-	NSArray *lists = [[[CWDynamicReader alloc] init] listsFromDatabase];
+	NSArray *lists = [_reader listsFromDatabase];
 	NSArray *values = [NSArray arrayWithArray:lists];
 
 	CWItemListValue *item = (CWItemListValue *)[self itemWithKey:@"list"];
@@ -68,7 +70,7 @@
 
 	NSURL *schemeURL = [NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	CWLOG(@"[ClearForProWidgets] Creating task with values [%@] using URL-scheme [%@]...", values, scheme);
-	[OBJCIPC sendMessageToAppWithIdentifier:@"com.realmacsoftware.clear" messageName:@"CWIPC.Create.Task" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
+	[OBJCIPC sendMessageToAppWithIdentifier:_reader.clearIdentifier messageName:@"CWIPC.Create.Task" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
 		CWLOG(@"[ClearForProWidgets] Created task in Clear with response: %@", response); 
 	}];
 }

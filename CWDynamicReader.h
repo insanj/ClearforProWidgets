@@ -8,6 +8,7 @@
 
 @interface CWDynamicReader : NSObject
 
+@property(nonatomic, retain) NSString *clearIdentifier;
 @property(nonatomic, retain) NSString *clearPath;
 
 // Overrode initializer which dynamically grabs Clear path.

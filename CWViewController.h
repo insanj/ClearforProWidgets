@@ -9,6 +9,8 @@
 #include <libobjcipc/objcipc.h>
 #import "CWDynamicReader.h"
 
-@interface CWViewController : PWContentItemViewController
+@interface CWViewController : PWContentItemViewController {
+	CWDynamicReader *_reader;
+}
 
 @end
