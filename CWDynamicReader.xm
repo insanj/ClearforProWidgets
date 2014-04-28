@@ -123,7 +123,31 @@
 			return @{ @"preferredTintColor" : [UIColor colorWithRed:0.791357 green:0.832333 blue:0.881232 alpha:1],
 					@"preferredBarTextColor" : [UIColor colorWithRed:0.219608 green:0.243137 blue:0.270588 alpha:1] };
 		case 20: // Analog ★
-			return @{ @"preferredTintColor" : @[[UIColor colorWithRed:0.670588 green:0.0784314 blue:0.819608 alpha:1], [UIColor colorWithRed:0.918954 green:0.186275 blue:0.538562 alpha:1], [UIColor colorWithRed:0.989542 green:0.286275 blue:0.330719 alpha:1], [UIColor colorWithRed:0.962745 green:0.407843 blue:0.127451 alpha:1], [UIColor colorWithRed:0.929412 green:0.575163 blue:0.00784314 alpha:1]][arc4random_uniform(5)],
+			return @{ @"preferredTintColor" : @[[UIColor colorWithRed:0.670588 green:0.0784314 blue:0.819608 alpha:1],
+												[UIColor colorWithRed:0.73268 green:0.105392 blue:0.749346 alpha:1],
+												[UIColor colorWithRed:0.794771 green:0.132353 blue:0.679085 alpha:1],
+												[UIColor colorWithRed:0.856863 green:0.159314 blue:0.608824 alpha:1],
+												[UIColor colorWithRed:0.918954 green:0.186275 blue:0.538562 alpha:1],
+												[UIColor colorWithRed:0.969935 green:0.212745 blue:0.472876 alpha:1],
+												[UIColor colorWithRed:0.976471 green:0.237255 blue:0.42549 alpha:1],
+												[UIColor colorWithRed:0.983007 green:0.261765 blue:0.378105 alpha:1],
+												[UIColor colorWithRed:0.989542 green:0.286275 blue:0.330719 alpha:1],
+												[UIColor colorWithRed:0.996078 green:0.310784 blue:0.283333 alpha:1],
+												[UIColor colorWithRed:0.993791 green:0.339216 blue:0.23366 alpha:1],
+												[UIColor colorWithRed:0.978268 green:0.373529 blue:0.180556 alpha:1],
+												[UIColor colorWithRed:0.962745 green:0.407843 blue:0.127451 alpha:1],
+												[UIColor colorWithRed:0.947222 green:0.442157 blue:0.0743464 alpha:1],
+												[UIColor colorWithRed:0.931699 green:0.476471 blue:0.0212418 alpha:1],
+												[UIColor colorWithRed:0.926961 green:0.522059 blue:0.00294118 alpha:1],
+												[UIColor colorWithRed:0.929412 green:0.575163 blue:0.00784314 alpha:1],
+												[UIColor colorWithRed:0.931863 green:0.628268 blue:0.0127451 alpha:1],
+												[UIColor colorWithRed:0.934314 green:0.681373 blue:0.0176471 alpha:1],
+												[UIColor colorWithRed:0.936765 green:0.734477 blue:0.022549 alpha:1],
+												[UIColor colorWithRed:0.867974 green:0.745752 blue:0.0196078 alpha:1],
+												[UIColor colorWithRed:0.781373 green:0.746569 blue:0.0147059 alpha:1],
+												[UIColor colorWithRed:0.694771 green:0.747386 blue:0.00980392 alpha:1],
+												[UIColor colorWithRed:0.60817 green:0.748203 blue:0.00490196 alpha:1],
+												[UIColor colorWithRed:0.521569 green:0.74902 blue:0 alpha:1]][arc4random_uniform(25)],
 					@"preferredBarTextColor" : [UIColor colorWithWhite:1 alpha:1] };
 		case 21: // Vanilla ★
 			return @{ @"preferredTintColor" : [UIColor colorWithRed:0.946619 green:0.905082 blue:0.828011 alpha:1],
@@ -140,7 +164,7 @@
 
 // Derived from infragistics (Torrey Betts) Sqlite3 example 
 - (NSArray *)parsedSQLiteListNamesForPath:(NSString *)path {
-	NSMutableArray *listNames = [[NSMutableArray alloc] init]; 
+	NSMutableArray *listNames = [[NSMutableArray alloc] init];
 	sqlite3 *database;
 
 	if (sqlite3_open([path UTF8String], &database) == SQLITE_OK) {
@@ -148,7 +172,7 @@
 		sqlite3_stmt *selectStatement; 
 		if (sqlite3_prepare_v2(database, sql, -1, &selectStatement, NULL) == SQLITE_OK) { 
 			while(sqlite3_step(selectStatement) == SQLITE_ROW) { 
-				[listNames addObject:[NSString stringWithUTF8String:(char *)sqlite3_column_text(selectStatement, 0)]]; 
+				[listNames addObject:[NSString stringWithUTF8String:(char *)sqlite3_column_text(selectStatement, 0)]];
 			}
 		}
 	}
@@ -165,7 +189,7 @@
 	}
 
 	else {
-		[preferences setValue:_clearPath forKey:@"savedPath"]; 
+		[preferences setValue:_clearPath forKey:@"savedPath"];
 	}
 
 	return [preferences writeToFile:path atomically:YES];
