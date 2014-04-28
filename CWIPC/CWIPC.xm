@@ -13,16 +13,12 @@
 
 %ctor {
 	CWLOG(@"Registering IPC listener for widget SpringBoard messages...");
-
-	@autoreleasepool{
-	[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create.Task" handler:^NSDictionary *(NSDictionary *message) {
+	[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create" handler:^NSDictionary *(NSDictionary *message) {
 		NSURL *schemeURL = message[@"schemeURL"];
 		UIApplication *app = [UIApplication sharedApplication];
 		BOOL loaded = [app openURL:schemeURL];
 
-		CWLOG(@"Received incoming Create Task message from SpringBoard (%@ -> %@)...", app, schemeURL);
+		CWLOG(@"Received incoming Create message from SpringBoard (%@ -> %@)...", app, schemeURL);
 		return @{ @"loaded" : @(loaded) };
 	 }];
-}
-
 }

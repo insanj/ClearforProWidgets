@@ -56,9 +56,12 @@
 
 - (void)createList:(NSString *)name {
 	NSString *scheme = [@"clearapp://list/create?listName=" stringByAppendingString:name];
-
-	CWLOG(@"[ClearForProWidgets] Creating list with using URL-scheme [%@]", scheme);
-	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+	NSURL *schemeURL = [NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	
+	CWLOG(@"Creating list using URL-scheme [%@]...", schemeURL);
+	[OBJCIPC sendMessageToAppWithIdentifier:_reader.clearIdentifier messageName:@"CWIPC.Create" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
+		CWLOG(@"Created list in %@ with response: %@", _reader.clearIdentifier, response); 
+	}];
 }
 
 - (void)submitEventHandler:(NSDictionary *)values {
@@ -67,11 +70,11 @@
 	NSString *list = values[@"list"][0];
 	NSString *task = values[@"task"];
 	NSString *scheme = [NSString stringWithFormat:@"clearapp://task/create?listName=%@&taskName=%@", list, task];
-
 	NSURL *schemeURL = [NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	CWLOG(@"Creating task with values [%@] using URL-scheme [%@]...", values, scheme);
-	[OBJCIPC sendMessageToAppWithIdentifier:_reader.clearIdentifier messageName:@"CWIPC.Create.Task" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
-		CWLOG(@"Created task in Clear with response: %@", response); 
+	
+	CWLOG(@"Creating task with values [%@] using URL-scheme [%@]...", values, schemeURL);
+	[OBJCIPC sendMessageToAppWithIdentifier:_reader.clearIdentifier messageName:@"CWIPC.Create" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
+		CWLOG(@"Created task in %@ with response: %@", _reader.clearIdentifier, response); 
 	}];
 }
 
