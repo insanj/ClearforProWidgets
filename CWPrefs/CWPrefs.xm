@@ -2,10 +2,10 @@
 // Created by Julian (insanj) Weiss
 // Source and license fully available on GitHub.
 
-#import <Preferences/PSListController.h>
-#import <UIKit/UIKit.h>
+#include <Preferences/PSListController.h>
+#include <UIKit/UIKit.h>
+#include <libobjcipc/objcipc.h>
 #import "../CWDynamicReader.h"
-#include <Foundation/NSDistributedNotificationCenter.h>
 
 @interface CWListController : PSListController {
 	CWDynamicReader *_reader;
@@ -51,7 +51,10 @@
 }
 
 - (void)viewWillAppear:(BOOL)arg1 {
-	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"CWSavePath" object:nil];
+	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:nil replyHandler:^(NSDictionary *response) { 
+		CWLOG(@"Received reply from SpringBoard for Save path call."); 
+	}];
+
 	[super viewWillAppear:arg1];
 }
 

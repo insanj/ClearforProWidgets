@@ -2,23 +2,31 @@
 // Created by Julian (insanj) Weiss (c) 2014
 // Source and license fully available on GitHub.
 
-#import <objc/runtime.h>
-#import <libobjcipc/objcipc.h>
-
-#ifdef DEBUG
-	#define CWLOG(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
-#else
-	#define CWLOG(fmt, ...) NSLog((@"" fmt), ##__VA_ARGS__)
-#endif
+#include <objc/runtime.h>
+#include <libobjcipc/objcipc.h>
+#include <sqlite3.h>
+#import "../CWDynamicReader.h"
 
 %ctor {
 	CWLOG(@"Registering IPC listener for widget SpringBoard messages...");
-	[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create" handler:^NSDictionary *(NSDictionary *message) {
-		NSURL *schemeURL = message[@"schemeURL"];
-		UIApplication *app = [UIApplication sharedApplication];
-		BOOL loaded = [app openURL:schemeURL];
+	@autoreleasepool {
+		[OBJCIPC registerIncomingMessageFromSpringBoardHandlerForMessageName:@"CWIPC.Create" handler:^NSDictionary *(NSDictionary *message) {
+			NSURL *schemeURL = message[@"schemeURL"];
+			UIApplication *app = [UIApplication sharedApplication];
+			BOOL loaded = [app openURL:schemeURL];
 
-		CWLOG(@"Received incoming Create message from SpringBoard (%@ -> %@)...", app, schemeURL);
-		return @{ @"loaded" : @(loaded) };
-	 }];
+			CWLOG(@"Received incoming Create message from SpringBoard (%@ -> %@)...", app, schemeURL);
+			return @{ @"loaded" : @(loaded) };
+		 }];
+
+		[OBJCIPC registerIncomingMessageFromAppHandlerForMessageName:@"CWIPC.Save" handler:^NSDictionary *(NSDictionary *message) { 
+			CWDynamicReader *saver = [[CWDynamicReader alloc] init];
+			BOOL worked = [saver savePath];
+
+			CWLOG(@"Saved path to Clear app from SpringBoard using %@...", saver);
+			return @{ @"worked" : @(worked) };
+		}];
+	}
+
+	[OBJCIPC sendMessageToSpringBoardWithMessageName:@"CWIPC.Save" dictionary:nil replyHandler:nil];
 }

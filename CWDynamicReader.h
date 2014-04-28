@@ -4,6 +4,7 @@
 
 #include <UIKit/UIKit.h>
 #include <sqlite3.h>
+
 #ifdef DEBUG
 	#define CWLOG(fmt, ...) NSLog((@"[ClearForProWidgets] %s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
