@@ -45,4 +45,9 @@
 	}
 }
 
+// Because chaining doesn't work from lock screen, and IPC would fail. Damn.
+- (BOOL)requiresProtectedDataAccess {
+	return YES;
+}
+
 @end

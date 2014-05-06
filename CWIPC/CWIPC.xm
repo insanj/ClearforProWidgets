@@ -13,10 +13,8 @@
 #include <Foundation/NSDistributedNotificationCenter.h>
 #import "../CWDynamicReader.h"
 
-static NSString* ipcWatchingIdentifier;
-
 %ctor {
-	CWLOG(@"Registering IPC listener for widget SpringBoard messages...");
+	CWLOG(@"Registering IPC listener for %@ messages...", [[UIApplication sharedApplication] displayIdentifier]);
 
 	[OBJCIPC registerIncomingMessageFromAppHandlerForMessageName:@"CWIPC.Lists" handler:^NSDictionary *(NSDictionary *message) { 
 		CWDynamicReader *reader = [[CWDynamicReader alloc] init];
@@ -26,37 +24,19 @@ static NSString* ipcWatchingIdentifier;
 		return @{ @"lists" : lists };
 	}];
 
-	/*[[NSDistributedNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
-		if (ipcWatchingIdentifier) {
-			CWLOG(@"Daisy chaining: %@", ipcWatchingIdentifier);
-			[[UIApplication sharedApplication] quitTopApplication:nil];
-			if (![ipcWatchingIdentifier isEqualToString:@"com.apple.springboard"]) {
-				CWLOG(@"Springboard chaining!");
-				[[UIApplication sharedApplication] launchApplicationWithIdentifier:ipcWatchingIdentifier suspended:NO];
-			}
-
-			CWLOG(@"Done chaining!");
-			ipcWatchingIdentifier = nil;
-		}
-
-		else {
-			CWLOG(@"Not watching, so forget it...");
-		}
-	}];*/
-
 	[[NSDistributedNotificationCenter defaultCenter] addObserverForName:@"CWIPC.Kill" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
 		NSString *killIdentifier = notification.userInfo[@"identifier"];
 
 		CWLOG(@"Fire ze missles! %@", killIdentifier);
-		[[UIApplication sharedApplication] quitTopApplication:nil];
-		if (![killIdentifier isEqualToString:@"com.apple.springboard"]) {
+		if ([killIdentifier isEqualToString:@"com.apple.springboard"]) {
+			[[UIApplication sharedApplication] quitTopApplication:nil];
+		}
+
+		else {
 			CWLOG(@"Go back home...");
-			[[UIApplication sharedApplication] launchApplicationWithIdentifier:ipcWatchingIdentifier suspended:NO];
+			[[UIApplication sharedApplication] launchApplicationWithIdentifier:killIdentifier suspended:NO];
 		}
 
 		CWLOG(@"Done chaining!");
-		//CWLOG(@"Time to watch: %@", ipcWatchingIdentifier);
 	}];
-
-	
 }
