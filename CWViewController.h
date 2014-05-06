@@ -6,7 +6,10 @@
 #include <libprowidgets/WidgetItems/PWWidgetItemWebView.h>
 #include <SpringBoard/SBApplicationController.h>
 #include <SpringBoard/SBApplication.h>
+#include <SpringBoard/SpringBoard.h>
+#include <UIKit/UIApplication+Private.h>
 #include <libobjcipc/objcipc.h>
+#include <Foundation/NSDistributedNotificationCenter.h>
 #import "CWDynamicReader.h"
 
 @interface CWViewController : PWContentItemViewController {

@@ -59,9 +59,24 @@
 	NSURL *schemeURL = [NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	
 	CWLOG(@"Creating list using URL-scheme [%@]...", schemeURL);
-	[OBJCIPC sendMessageToAppWithIdentifier:_reader.clearIdentifier messageName:@"CWIPC.Create" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
-		CWLOG(@"Created list in %@ with response: %@", _reader.clearIdentifier, response); 
+	SBApplication *frontMostApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
+	NSString __block *displayIdentifier = frontMostApp.displayIdentifier;
+	
+	NSObject __block *observer = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification){
+		CWLOG(@"Daisy chaining!");
+		[[UIApplication sharedApplication] quitTopApplication:nil];
+		if (![displayIdentifier isEqualToString:@"com.apple.springboard"]) {
+			CWLOG(@"Springboard chaining!");
+			[[UIApplication sharedApplication] launchApplicationWithIdentifier:displayIdentifier suspended:NO];
+		}
+
+		CWLOG(@"Done chaining!");
+		[[NSNotificationCenter defaultCenter] removeObserver:observer];
 	}];
+
+	CWLOG(@"Opening app...");
+	BOOL loaded = [[UIApplication sharedApplication] openURL:schemeURL];
+	CWLOG(@"App loading: %@", loaded ? @"success" : @"failure");
 }
 
 - (void)submitEventHandler:(NSDictionary *)values {
@@ -73,9 +88,17 @@
 	NSURL *schemeURL = [NSURL URLWithString:[scheme stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 	
 	CWLOG(@"Creating task with values [%@] using URL-scheme [%@]...", values, schemeURL);
-	[OBJCIPC sendMessageToAppWithIdentifier:_reader.clearIdentifier messageName:@"CWIPC.Create" dictionary:@{ @"schemeURL" : schemeURL } replyHandler:^(NSDictionary *response) { 
-		CWLOG(@"Created task in %@ with response: %@", _reader.clearIdentifier, response); 
-	}];
+	SBApplication *frontMostApp = [(SpringBoard *)[UIApplication sharedApplication] _accessibilityFrontMostApplication];
+	NSString *displayIdentifier = frontMostApp.displayIdentifier;
+	if (!displayIdentifier) {
+		displayIdentifier = @"com.apple.springboard";
+	}
+
+	CWLOG(@"Opening app...");
+	BOOL loaded = [[UIApplication sharedApplication] openURL:schemeURL];
+	[[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"CWIPC.Kill" object:nil userInfo:@{ @"identifier" : displayIdentifier }];
+
+	CWLOG(@"App loading: %@", loaded ? @"success" : @"failure");
 }
 
 @end
