@@ -1,7 +1,9 @@
 Clear For ProWidgets
 =======================
 
-Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), live preferences (plist) and database (sqlite3) reading, and instantaneous background task adding ([OBJCIPC](https://github.com/a1anyip/libobjcipc)), providing a beautiful, seamless [Clear](http://realmacsoftware.com/clear) experience. Available from [BigBoss](http://thebigboss.org) for free.
+Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), live preferences (plist) and database (sqlite3) reading (thanks to [OBJCIPC](https://github.com/a1anyip/libobjcipc)), and chaining background task adding, providing a beautiful, seamless [Clear](http://realmacsoftware.com/clear) experience. Available from [BigBoss](http://thebigboss.org) for free.
+
+Clear for ProWidgets has no affiliation with Realmac Software or other Clear products.
 
 ![Three-pronged screenshot of all widget usage](Screenie.png)
 
