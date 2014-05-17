@@ -1,4 +1,4 @@
-Clear For ProWidgets
+Clear For ProWidgets ![](icon.png)
 =======================
 
 Use Clear on the fly from [ProWidgets](http://prowidgets.net/). Advanced widget implementation using the [ProWidgets API](http://prowidgets.net/doc/), live preferences (plist) and database (sqlite3) reading (thanks to [OBJCIPC](https://github.com/a1anyip/libobjcipc)), and chaining background task adding, providing a beautiful, seamless [Clear](http://realmacsoftware.com/clear) experience. Available from [BigBoss](http://thebigboss.org) for free.
